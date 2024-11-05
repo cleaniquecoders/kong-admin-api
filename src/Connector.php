@@ -2,6 +2,7 @@
 
 namespace CleaniqueCoders\KongAdminApi;
 
+use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\HeaderAuthenticator;
 use Saloon\Http\Connector as Base;
 
@@ -50,9 +51,9 @@ class Connector extends Base
     /**
      * Set up the default authentication for Kong Admin API requests.
      *
-     * @return HeaderAuthenticator The authenticator with API key and key name
+     * @return Authenticator The authenticator with API key and key name
      */
-    protected function defaultAuth(): HeaderAuthenticator
+    protected function defaultAuth(): ?Authenticator
     {
         return new HeaderAuthenticator(
             $this->configuration->getApiKey(),
