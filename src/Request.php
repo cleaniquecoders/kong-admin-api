@@ -2,9 +2,11 @@
 
 namespace CleaniqueCoders\KongAdminApi;
 
+use CleaniqueCoders\KongAdminApi\Contracts\Plugin as PluginContract;
 use CleaniqueCoders\KongAdminApi\Contracts\Request as RequestContract;
 use CleaniqueCoders\KongAdminApi\Contracts\Resource;
 use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
+use CleaniqueCoders\KongAdminApi\Enums\Plugin;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request as SaloonRequest;
@@ -16,7 +18,7 @@ use Saloon\Traits\Body\HasJsonBody;
  * Represents a generic API request that can be customized with HTTP methods,
  * endpoints, and JSON body handling.
  */
-class Request extends SaloonRequest implements HasBody, RequestContract, Resource
+class Request extends SaloonRequest implements HasBody, PluginContract, RequestContract, Resource
 {
     use HasJsonBody;
 
@@ -183,12 +185,58 @@ class Request extends SaloonRequest implements HasBody, RequestContract, Resourc
     }
 
     /**
-     * Resolves the endpoint for the request.
+     * Configure the request for a plugin-related endpoint.
      *
-     * @return string The fully resolved endpoint for the API request
+     * @param  Plugin  $plugin  The plugin type
+     * @param  Endpoint  $endpoint  The parent resource type (e.g., Endpoint::CONSUMERS, Endpoint::ROUTES, Endpoint::SERVICES)
+     * @param  string  $identifier  The ID of the parent resource (e.g., consumer ID, route ID, or service ID)
+     * @param  ?string  $plugin_identifier  Optional identifier for the specific plugin instance
+     * @return $this
+     */
+    public function plugin(Plugin $plugin, Endpoint $endpoint, string $identifier, ?string $plugin_identifier = null): self
+    {
+        // Construct the plugin-specific endpoint path
+        $pluginEndpoint = match ($endpoint) {
+            Endpoint::CONSUMERS => "consumers/{$identifier}/plugins",
+            Endpoint::ROUTES => "routes/{$identifier}/plugins",
+            Endpoint::SERVICES => "services/{$identifier}/plugins",
+            default => throw new \InvalidArgumentException("Unsupported endpoint for plugins: {$endpoint->value}")
+        };
+
+        // Set the fully resolved endpoint and optional plugin identifier
+        $this->endpoint = Endpoint::PLUGINS;
+        $this->identifier = $plugin_identifier ? "{$pluginEndpoint}/{$plugin_identifier}" : $pluginEndpoint;
+
+        // Set the plugin name in the data (for creating or updating plugins)
+        $this->setData(['name' => $plugin->value]);
+
+        return $this;
+    }
+
+    /**
+     * Determine if the current request is a plugin request to consumers, routes, or services.
+     *
+     * @return bool True if it's a plugin request to a specific resource type; otherwise, false.
+     */
+    public function isPluginRequest(): bool
+    {
+        return $this->endpoint === Endpoint::PLUGINS &&
+               preg_match('/^(consumers|routes|services)\//', $this->identifier) === 1;
+    }
+
+    /**
+     * Resolve the endpoint for the request.
+     *
+     * @return string The resolved endpoint URL
      */
     public function resolveEndpoint(): string
     {
-        return $this->getEndpoint()->value.($this->getIdentifier() !== '' ? '/'.$this->getIdentifier() : '');
+        return $this->isPluginRequest()
+            ? $this->getIdentifier()
+            : $this->getEndpoint()->value.(
+                $this->getIdentifier() !== ''
+                ? '/'.$this->getIdentifier()
+                : ''
+            );
     }
 }
