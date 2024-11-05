@@ -2,8 +2,8 @@
 
 namespace CleaniqueCoders\KongAdminApi\Contracts;
 
-use CleaniqueCoders\KongAdminApi\Api\ApiRequest;
-use CleaniqueCoders\KongAdminApi\Api\ApiResponse;
+use CleaniqueCoders\KongAdminApi\ApiRequest;
+use CleaniqueCoders\KongAdminApi\ApiResponse;
 use Saloon\Http\Response;
 
 /**

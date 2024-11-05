@@ -1,8 +1,8 @@
 <?php
 
-use CleaniqueCoders\KongAdminApi\Api\ApiClient;
-use CleaniqueCoders\KongAdminApi\Api\ApiRequest;
-use CleaniqueCoders\KongAdminApi\Api\ApiResponse;
+use CleaniqueCoders\KongAdminApi\ApiClient;
+use CleaniqueCoders\KongAdminApi\ApiRequest;
+use CleaniqueCoders\KongAdminApi\ApiResponse;
 use CleaniqueCoders\KongAdminApi\Configuration;
 use CleaniqueCoders\KongAdminApi\Connector;
 use Saloon\Enums\Method;

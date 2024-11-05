@@ -1,6 +1,6 @@
 <?php
 
-namespace CleaniqueCoders\KongAdminApi\Api;
+namespace CleaniqueCoders\KongAdminApi;
 
 use CleaniqueCoders\KongAdminApi\Contracts\Request as RequestContract;
 use Saloon\Contracts\Body\HasBody;

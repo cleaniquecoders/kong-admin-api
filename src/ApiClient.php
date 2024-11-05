@@ -1,8 +1,7 @@
 <?php
 
-namespace CleaniqueCoders\KongAdminApi\Api;
+namespace CleaniqueCoders\KongAdminApi;
 
-use CleaniqueCoders\KongAdminApi\Connector;
 use CleaniqueCoders\KongAdminApi\Contracts\Client;
 use DateTime;
 use Saloon\Http\Response;

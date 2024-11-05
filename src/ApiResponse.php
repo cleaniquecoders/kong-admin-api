@@ -1,6 +1,6 @@
 <?php
 
-namespace CleaniqueCoders\KongAdminApi\Api;
+namespace CleaniqueCoders\KongAdminApi;
 
 use CleaniqueCoders\KongAdminApi\Contracts\Response;
 use DateTimeInterface;
