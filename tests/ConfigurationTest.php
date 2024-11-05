@@ -21,9 +21,10 @@ it('can initialize Configuration with all parameters', function () {
     expect($config->getKeyName())->toBe($keyName);
     expect($config->getHeaders())->toBe($headers);
     expect($config->shouldVerify())->toBeTrue();
+    expect($config->getUrl())->toBe('http://localhost/admin');
 });
 
-it('uses default keyName, headers, and verify if not provided', function () {
+it('uses default values for keyName, headers, and verify if not provided', function () {
     $base = 'http://localhost';
     $uri = '/admin';
     $apiKey = 'test-api-key';
@@ -39,6 +40,12 @@ it('uses default keyName, headers, and verify if not provided', function () {
         'Accept' => 'application/json',
     ]); // Default headers
     expect($config->shouldVerify())->toBeFalse(); // Default verify
+    expect($config->getUrl())->toBe('http://localhost/admin'); // URL combination
+});
+
+it('correctly combines base and uri in getUrl', function () {
+    $config = new Configuration('http://localhost/', '/admin', 'test-api-key');
+    expect($config->getUrl())->toBe('http://localhost/admin');
 });
 
 it('throws an error when required parameters are missing', function () {
