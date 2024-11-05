@@ -3,6 +3,7 @@
 namespace CleaniqueCoders\KongAdminApi;
 
 use CleaniqueCoders\KongAdminApi\Contracts\Request as RequestContract;
+use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request as SaloonRequest;
@@ -21,7 +22,7 @@ class Request extends SaloonRequest implements HasBody, RequestContract
     /**
      * The endpoint for the API request.
      */
-    protected string $endpoint = '';
+    protected Endpoint $endpoint;
 
     /**
      * The identifier for the API request.
@@ -51,10 +52,10 @@ class Request extends SaloonRequest implements HasBody, RequestContract
     /**
      * Sets the endpoint for the API request.
      *
-     * @param  string  $endpoint  The specific endpoint for the API request
+     * @param  Endpoint  $endpoint  The specific endpoint for the API request
      * @return $this
      */
-    public function setEndPoint(string $endpoint): self
+    public function setEndPoint(Endpoint $endpoint): self
     {
         $this->endpoint = $endpoint;
 
@@ -64,9 +65,9 @@ class Request extends SaloonRequest implements HasBody, RequestContract
     /**
      * Gets the endpoint for the API request.
      *
-     * @return string The endpoint for the API request
+     * @return Endpoint The endpoint for the API request
      */
-    public function getEndpoint(): string
+    public function getEndpoint(): Endpoint
     {
         return $this->endpoint;
     }
@@ -172,6 +173,6 @@ class Request extends SaloonRequest implements HasBody, RequestContract
      */
     public function resolveEndpoint(): string
     {
-        return $this->getEndpoint().($this->getIdentifier() !== '' ? '/'.$this->getIdentifier() : '');
+        return $this->getEndpoint()->value.($this->getIdentifier() !== '' ? '/'.$this->getIdentifier() : '');
     }
 }

@@ -28,9 +28,9 @@ class Client implements Contract
      */
     public function send(Request $request, array $data = []): Response
     {
-        $response = $this->connector->send($request);
-
-        return $this->response($response);
+        return $this->response(
+            $this->connector->send($request)
+        );
     }
 
     /**

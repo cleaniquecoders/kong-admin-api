@@ -2,6 +2,7 @@
 
 namespace CleaniqueCoders\KongAdminApi\Contracts;
 
+use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
 use Saloon\Enums\Method;
 
 /**
@@ -30,16 +31,16 @@ interface Request
     /**
      * Set the endpoint for the API request.
      *
-     * @param  string  $endpoint  The API endpoint
+     * @param  Endpoint  $endpoint  The API endpoint
      */
-    public function setEndpoint(string $endpoint): self;
+    public function setEndpoint(Endpoint $endpoint): self;
 
     /**
      * Get the endpoint for the API request.
      *
-     * @return string The endpoint for the API request
+     * @return Endpoint The endpoint for the API request
      */
-    public function getEndpoint(): string;
+    public function getEndpoint(): Endpoint;
 
     /**
      * Resolve and retrieve the complete endpoint path for the API request.

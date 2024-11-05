@@ -3,6 +3,7 @@
 use CleaniqueCoders\KongAdminApi\Client;
 use CleaniqueCoders\KongAdminApi\Configuration;
 use CleaniqueCoders\KongAdminApi\Connector;
+use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
 use CleaniqueCoders\KongAdminApi\Request;
 use CleaniqueCoders\KongAdminApi\Response;
 use Saloon\Enums\Method;
@@ -40,7 +41,7 @@ it('sends an API request and processes the response', function () {
     $client = new Client($this->connector);
 
     $request = new Request;
-    $request->setEndPoint('example');
+    $request->setEndPoint(Endpoint::SERVICES);
     $request->get();
 
     $response = $client->send($request);
@@ -58,11 +59,11 @@ it('sends an API request and processes the response', function () {
 it('sets and retrieves data in Request', function () {
     $request = new Request;
     $request->setMethod(Method::POST)
-        ->setEndpoint('example-endpoint')
+        ->setEndpoint(Endpoint::SERVICES)
         ->body()->set(['key' => 'value']);
 
     expect($request->getMethod())->toBe(Method::POST)
-        ->and($request->getEndpoint())->toBe('example-endpoint')
+        ->and($request->getEndpoint())->toBe(Endpoint::SERVICES)
         ->and($request->body()->all())->toBe(['key' => 'value']);
 });
 
