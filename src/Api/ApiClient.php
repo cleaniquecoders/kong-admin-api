@@ -141,20 +141,12 @@ class ApiClient implements Client
     /**
      * Send a request to the API with the specified HTTP method and data.
      *
-     * @param  Method  $method  The HTTP method to use
+     * @param  ApiRequest  $request  The API request
      * @param  array<string, mixed>  $data  The data to include in the request
      * @return ApiResponse The structured API response
      */
-    public function sendRequest(Method $method, array $data = []): ApiResponse
+    public function sendRequest(ApiRequest $request, array $data = []): ApiResponse
     {
-        $request = (new ApiRequest)
-            ->setMethod($method)
-            ->setEndpoint($this->buildPath());
-
-        if (! empty($data) && in_array($method, [Method::POST, Method::PATCH, Method::DELETE])) {
-            $request->body()->set($data);
-        }
-
         $response = $this->connector->send($request);
 
         return $this->response($response);

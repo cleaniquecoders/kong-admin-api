@@ -40,7 +40,10 @@ it('sends an API request and processes the response', function () {
     $client = new ApiClient($this->connector);
     $client->setPath('example-path');
 
-    $response = $client->sendRequest(Method::GET);
+    $request = new ApiRequest;
+    $request->get();
+
+    $response = $client->sendRequest($request);
 
     expect($response)->toBeInstanceOf(ApiResponse::class)
         ->and($response->getStatusCode())->toBe('200')

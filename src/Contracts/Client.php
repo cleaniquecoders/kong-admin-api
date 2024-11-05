@@ -2,6 +2,7 @@
 
 namespace CleaniqueCoders\KongAdminApi\Contracts;
 
+use CleaniqueCoders\KongAdminApi\Api\ApiRequest;
 use CleaniqueCoders\KongAdminApi\Api\ApiResponse;
 use Saloon\Enums\Method;
 
@@ -57,11 +58,11 @@ interface Client
     /**
      * Send a request to the API with the specified HTTP method and data.
      *
-     * @param  Method  $method  The HTTP method to use
+     * @param  ApiRequest  $request  The API request
      * @param  array<string, mixed>  $data  The data to include in the request
      * @return ApiResponse The structured API response
      */
-    public function sendRequest(Method $method, array $data = []): ApiResponse;
+    public function sendRequest(ApiRequest $request, array $data = []): ApiResponse;
 
     /**
      * Retrieve a list of resources.
