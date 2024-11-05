@@ -14,7 +14,7 @@ For contributing for development, refer [development](docs/development.md) docum
 
 ## Usage
 
-Here's an example of how to configure and use the package to fetch a list of services from the Kong Admin API:
+Here are examples of using `store`, `update`, `delete`, and `get` requests.
 
 ```php
 use CleaniqueCoders\KongAdminApi\Client;
@@ -35,22 +35,91 @@ $configuration = new Configuration(
 $connector = new Connector($configuration);
 $client = new Client($connector);
 
+// Example: Store a new service
 try {
-    // Send a GET request to retrieve services
+    $response = $client->send(
+        (new Request)
+            ->setEndPoint(Endpoint::SERVICES)
+            ->store([
+                'name' => 'example-service',
+                'url' => 'http://example.com'
+            ])
+    );
+
+    print_r($response); // Handle the response as needed
+
+} catch (\Throwable $th) {
+    throw $th;
+}
+
+// Example: Update an existing service
+try {
+    $response = $client->send(
+        (new Request)
+            ->setEndPoint(Endpoint::SERVICES)
+            ->update('example-service', [
+                'url' => 'http://new-example.com'
+            ])
+    );
+
+    print_r($response); // Handle the response as needed
+
+} catch (\Throwable $th) {
+    throw $th;
+}
+
+// Example: Delete a service
+try {
+    $response = $client->send(
+        (new Request)
+            ->setEndPoint(Endpoint::SERVICES)
+            ->delete('example-service')
+    );
+
+    print_r($response); // Handle the response as needed
+
+} catch (\Throwable $th) {
+    throw $th;
+}
+
+// Example: Get a specific service
+try {
+    $response = $client->send(
+        (new Request)
+            ->setEndPoint(Endpoint::SERVICES)
+            ->get('example-service')
+    );
+
+    print_r($response); // Handle the response as needed
+
+} catch (\Throwable $th) {
+    throw $th;
+}
+
+// Example: Get a list of all services
+try {
     $response = $client->send(
         (new Request)
             ->setEndPoint(Endpoint::SERVICES)
             ->get()
     );
 
-    // Process the response
-    print_r($response); // Or handle as needed
+    print_r($response); // Handle the response as needed
 
 } catch (\Throwable $th) {
-    // Handle exceptions
     throw $th;
 }
 ```
+
+### Explanation
+
+1. **Store**: Creates a new service by setting the endpoint to `SERVICES` and calling `store()` with the service data.
+2. **Update**: Updates an existing service (specified by `identifier`, e.g., `'example-service'`) using the `update()` method with new data.
+3. **Delete**: Deletes a service specified by the `identifier`.
+4. **Get (Single Service)**: Retrieves details for a single service by passing the `identifier`.
+5. **Get (All Services)**: Retrieves a list of all services without specifying an identifier.
+
+Each example includes error handling to capture and manage exceptions.
 
 ## References
 
