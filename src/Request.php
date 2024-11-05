@@ -3,6 +3,7 @@
 namespace CleaniqueCoders\KongAdminApi;
 
 use CleaniqueCoders\KongAdminApi\Contracts\Request as RequestContract;
+use CleaniqueCoders\KongAdminApi\Contracts\Resource;
 use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
@@ -15,7 +16,7 @@ use Saloon\Traits\Body\HasJsonBody;
  * Represents a generic API request that can be customized with HTTP methods,
  * endpoints, and JSON body handling.
  */
-class Request extends SaloonRequest implements HasBody, RequestContract
+class Request extends SaloonRequest implements HasBody, RequestContract, Resource
 {
     use HasJsonBody;
 
@@ -132,6 +133,21 @@ class Request extends SaloonRequest implements HasBody, RequestContract
     {
         return $this
             ->setMethod(Method::PUT)
+            ->setIdentifier($identifier)
+            ->setData($data);
+    }
+
+    /**
+     * Prepares a patch request with PATCH method, identifier, and data.
+     *
+     * @param  string  $identifier  The identifier for the resource to update
+     * @param  array<string, mixed>  $data  The data for the update
+     * @return $this
+     */
+    public function patch(string $identifier, array $data): self
+    {
+        return $this
+            ->setMethod(Method::PATCH)
             ->setIdentifier($identifier)
             ->setData($data);
     }
