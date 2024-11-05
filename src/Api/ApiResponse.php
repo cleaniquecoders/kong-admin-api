@@ -2,6 +2,7 @@
 
 namespace CleaniqueCoders\KongAdminApi\Api;
 
+use CleaniqueCoders\KongAdminApi\Contracts\Response;
 use DateTimeInterface;
 
 /**
@@ -9,7 +10,7 @@ use DateTimeInterface;
  *
  * Encapsulates the API response structure and data.
  */
-class ApiResponse
+class ApiResponse implements Response
 {
     /**
      * The HTTP status code of the response.
