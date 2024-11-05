@@ -2,22 +2,23 @@
 
 namespace CleaniqueCoders\KongAdminApi;
 
+use Saloon\Http\Auth\HeaderAuthenticator;
 use Saloon\Http\Connector as Base;
 
 /**
  * Class Connector
  *
- * This class provides a connector for the Kong Admin API using the provided configuration.
+ * Provides a connector for interacting with the Kong Admin API using the specified configuration.
  */
 class Connector extends Base
 {
     /**
-     * Configuration instance for the Kong Admin API connection.
+     * The configuration instance for the Kong Admin API connection.
      */
     protected Configuration $configuration;
 
     /**
-     * Constructor to initialize the connector with a configuration.
+     * Initializes the connector with the provided configuration.
      *
      * @param  Configuration  $configuration  The configuration settings for the Kong Admin API
      */
@@ -29,7 +30,7 @@ class Connector extends Base
     /**
      * Resolve the base URL for the Kong Admin API.
      *
-     * @return string The base URL from the configuration
+     * @return string The base URL for the API from the configuration
      */
     public function resolveBaseUrl(): string
     {
@@ -37,12 +38,25 @@ class Connector extends Base
     }
 
     /**
-     * Get the default headers for the Kong Admin API requests.
+     * Retrieve the default headers for requests to the Kong Admin API.
      *
-     * @return array<string, string> The headers from the configuration
+     * @return array<string, string> An associative array of headers
      */
     protected function defaultHeaders(): array
     {
         return $this->configuration->getHeaders();
+    }
+
+    /**
+     * Set up the default authentication for Kong Admin API requests.
+     *
+     * @return HeaderAuthenticator The authenticator with API key and key name
+     */
+    protected function defaultAuth(): HeaderAuthenticator
+    {
+        return new HeaderAuthenticator(
+            $this->configuration->getApiKey(),
+            $this->configuration->getKeyName()
+        );
     }
 }

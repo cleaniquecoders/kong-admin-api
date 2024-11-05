@@ -1,6 +1,6 @@
 <?php
 
-namespace CleaniqueCoders\KongAdminApi;
+namespace CleaniqueCoders\KongAdminApi\Contracts;
 
 /**
  * Interface Plugin
