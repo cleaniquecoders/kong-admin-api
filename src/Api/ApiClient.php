@@ -14,7 +14,7 @@ use Saloon\Http\Response;
  *
  * The client for interacting with the Kong Admin API.
  */
-abstract class ApiClient implements Client
+class ApiClient implements Client
 {
     /**
      * Status code from the API response.
