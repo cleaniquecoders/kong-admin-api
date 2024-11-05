@@ -10,142 +10,53 @@ You can install the package via Composer:
 composer require cleaniquecoders/kong-admin-api
 ```
 
+For contributing for development, refer [development](docs/development.md) documentation.
+
 ## Usage
 
-### Setup
-
-1. **Install the Package** (if not already installed):
-
-   ```bash
-   composer require cleaniquecoders/kong-admin-api
-   ```
-
-2. **Configure the `Connector`**:
-   Set up the configuration details such as base URL, URI, API key, and any additional headers.
-
-   ```php
-   use CleaniqueCoders\KongAdminApi\Configuration;
-   use CleaniqueCoders\KongAdminApi\Connector;
-
-   $configuration = new Configuration(
-       base: 'https://your-kong-admin-url.com',
-       uri: 'api',
-       apiKey: 'your-api-key',
-       keyName: 'apikey'
-   );
-
-   $connector = new Connector($configuration);
-   ```
-
-### Interacting with the API
-
-The `ApiClient` class allows you to interact with the API for common CRUD operations and manage resources.
-
-#### Initialize the Client
+Here's an example of how to configure and use the package to fetch a list of services from the Kong Admin API:
 
 ```php
-use CleaniqueCoders\KongAdminApi\Api\ApiClient;
+use CleaniqueCoders\KongAdminApi\Client;
+use CleaniqueCoders\KongAdminApi\Configuration;
+use CleaniqueCoders\KongAdminApi\Connector;
+use CleaniqueCoders\KongAdminApi\Enums\Endpoint;
+use CleaniqueCoders\KongAdminApi\Request;
 
-$client = new ApiClient($connector);
-$client->setPath('resources'); // Set the base path for the resource endpoint
-```
+// Initialize configuration with Kong Admin details
+$configuration = new Configuration(
+    base: 'http://127.0.0.1:8000',
+    uri: 'admin-api',
+    apiKey: 'your-api-key',
+    keyName: 'api-key'
+);
 
-#### CRUD Operations
+// Create a connector and client
+$connector = new Connector($configuration);
+$client = new Client($connector);
 
-1. **Retrieve All Resources (Index)**
-
-   ```php
-   $resources = $client->index();
-   print_r($resources);
-   ```
-
-2. **Show a Specific Resource**
-
-   ```php
-   $resourceId = 'example-id';
-   $resource = $client->show($resourceId);
-   print_r($resource);
-   ```
-
-3. **Create a New Resource**
-
-   ```php
-   $data = [
-       'name' => 'New Resource',
-       'description' => 'Description for the new resource'
-   ];
-
-   $createdResource = $client->store($data);
-   print_r($createdResource);
-   ```
-
-4. **Update an Existing Resource**
-
-   ```php
-   $resourceId = 'example-id';
-   $updateData = [
-       'name' => 'Updated Resource',
-       'description' => 'Updated description'
-   ];
-
-   $updatedResource = $client->update($resourceId, $updateData);
-   print_r($updatedResource);
-   ```
-
-5. **Delete a Resource**
-
-   ```php
-   $resourceId = 'example-id';
-   $deleteResult = $client->delete($resourceId);
-   print_r($deleteResult);
-   ```
-
-### Handling Responses
-
-Each CRUD method returns an `ApiResponse` object, which contains structured data about the response, including status code, message, and the actual data.
-
-For example, you can retrieve status information and data like so:
-
-```php
-$response = $client->show('example-id');
-
-echo "Status Code: " . $response['status']['code'] . PHP_EOL;
-echo "Status Phrase: " . $response['status']['phrase'] . PHP_EOL;
-print_r($response['data']);
-```
-
-### Custom Requests with `ApiRequest`
-
-You can create a custom request using the `ApiRequest` class, allowing you to specify HTTP methods, endpoints, and payloads.
-
-```php
-use CleaniqueCoders\KongAdminApi\Api\ApiRequest;
-use Saloon\Enums\Method;
-
-$request = new ApiRequest();
-$request->setMethod(Method::POST)
-        ->setEndpoint('custom-endpoint')
-        ->body()->set([
-            'param1' => 'value1',
-            'param2' => 'value2',
-        ]);
-
-$response = $connector->send($request);
-print_r($response->json());
-```
-
-### Error Handling
-
-Wrap your requests in `try-catch` blocks to handle any exceptions that may occur:
-
-```php
 try {
-    $resource = $client->show('invalid-id');
-    print_r($resource);
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
+    // Send a GET request to retrieve services
+    $response = $client->send(
+        (new Request)
+            ->setEndPoint(Endpoint::SERVICES)
+            ->get()
+    );
+
+    // Process the response
+    print_r($response); // Or handle as needed
+
+} catch (\Throwable $th) {
+    // Handle exceptions
+    throw $th;
 }
 ```
+
+## References
+
+For more details on available endpoints, parameters, and usage of the Kong Admin API, please refer to the [Kong Admin API documentation](https://docs.konghq.com/gateway/latest/admin-api/).
+
+The [`Endpoint`](src/Enums/Endpoint.php) enum in this package reflects the endpoints defined in the OpenAPI specification provided by Kong.
 
 ## Testing
 
@@ -161,7 +72,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/cleaniquecoders/kong-admin-api/blob/main/CONTRIBUTING.md) for details on how to contribute.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details on how to contribute.
 
 ## Security Vulnerabilities
 
