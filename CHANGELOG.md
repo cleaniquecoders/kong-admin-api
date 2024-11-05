@@ -2,6 +2,10 @@
 
 All notable changes to `kong-admin-api` will be documented in this file.
 
+## v1.0.1 - 2024-11-05
+
+**Full Changelog**: https://github.com/cleaniquecoders/kong-admin-api/compare/v1.0.0...v1.0.1
+
 ## v1.0.0 - 2024-11-05
 
 ### Release v1.0.0
@@ -13,14 +17,20 @@ The **v1.0.0** release of the `CleaniqueCoders\KongAdminApi` package provides a 
 #### 🛠️ Features
 
 - **Service Management**: Create, update, retrieve, and delete services within Kong.
+  
 - **Route Management**: Full CRUD operations for managing routes associated with services.
+  
 - **Consumer Management**: Manage consumers including creation, retrieval, updating, and deletion.
+  
 - **Plugin Support**:
+  
   - Associate plugins with `consumers`, `routes`, and `services`.
   - Supported plugins include **rate-limiting**, **CORS**, **JWT**, and more (limited to Kong's free tier).
   
 - **Structured API Responses**: Responses follow a structured format with `status`, `data`, and `meta` sections for consistency.
+  
 - **Configuration-Based Setup**: Easily configure API base URL, authentication, and headers.
+  
 
 **Full Changelog**: https://github.com/cleaniquecoders/kong-admin-api/commits/v1.0.0
 
