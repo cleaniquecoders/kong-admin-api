@@ -2,15 +2,15 @@
 
 namespace CleaniqueCoders\KongAdminApi;
 
-use CleaniqueCoders\KongAdminApi\Contracts\Response;
+use CleaniqueCoders\KongAdminApi\Contracts\Response as Contract;
 use DateTimeInterface;
 
 /**
- * Class ApiResponse
+ * Class Response
  *
  * Encapsulates the API response structure and data.
  */
-class ApiResponse implements Response
+class Response implements Contract
 {
     /**
      * The HTTP status code of the response.
@@ -35,7 +35,7 @@ class ApiResponse implements Response
     private DateTimeInterface $respondedAt;
 
     /**
-     * ApiResponse constructor.
+     * Response constructor.
      *
      * @param  string  $statusCode  The HTTP status code
      * @param  string  $statusPhrase  The HTTP status phrase
@@ -85,7 +85,7 @@ class ApiResponse implements Response
     }
 
     /**
-     * Convert the ApiResponse instance to an array.
+     * Convert the Response instance to an array.
      *
      * @return array<string, mixed> The response data in array format
      */

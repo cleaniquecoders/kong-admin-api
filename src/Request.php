@@ -5,16 +5,16 @@ namespace CleaniqueCoders\KongAdminApi;
 use CleaniqueCoders\KongAdminApi\Contracts\Request as RequestContract;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
-use Saloon\Http\Request;
+use Saloon\Http\Request as SaloonRequest;
 use Saloon\Traits\Body\HasJsonBody;
 
 /**
- * Class ApiRequest
+ * Class Request
  *
  * Represents a generic API request that can be customized with HTTP methods,
  * endpoints, and JSON body handling.
  */
-class ApiRequest extends Request implements HasBody, RequestContract
+class Request extends SaloonRequest implements HasBody, RequestContract
 {
     use HasJsonBody;
 

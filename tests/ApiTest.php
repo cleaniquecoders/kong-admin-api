@@ -1,10 +1,10 @@
 <?php
 
-use CleaniqueCoders\KongAdminApi\ApiClient;
-use CleaniqueCoders\KongAdminApi\ApiRequest;
-use CleaniqueCoders\KongAdminApi\ApiResponse;
+use CleaniqueCoders\KongAdminApi\Client;
 use CleaniqueCoders\KongAdminApi\Configuration;
 use CleaniqueCoders\KongAdminApi\Connector;
+use CleaniqueCoders\KongAdminApi\Request;
+use CleaniqueCoders\KongAdminApi\Response;
 use Saloon\Enums\Method;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
@@ -21,10 +21,10 @@ beforeEach(function () {
     $this->connector = new Connector($this->configuration);
 });
 
-it('initializes the ApiClient with Connector', function () {
-    $client = new ApiClient($this->connector);
+it('initializes the Client with Connector', function () {
+    $client = new Client($this->connector);
 
-    expect($client)->toBeInstanceOf(ApiClient::class);
+    expect($client)->toBeInstanceOf(Client::class);
 });
 
 it('sends an API request and processes the response', function () {
@@ -37,15 +37,15 @@ it('sends an API request and processes the response', function () {
 
     $this->connector->withMockClient($mockClient);
 
-    $client = new ApiClient($this->connector);
+    $client = new Client($this->connector);
 
-    $request = new ApiRequest;
+    $request = new Request;
     $request->setEndPoint('example');
     $request->get();
 
     $response = $client->send($request);
 
-    expect($response)->toBeInstanceOf(ApiResponse::class)
+    expect($response)->toBeInstanceOf(Response::class)
         ->and($response->getStatusCode())->toBe('200')
         ->and($response->getStatusPhrase())->toBe('OK')
         ->and($response->getData())->toBe(['result' => 'success'])
@@ -55,8 +55,8 @@ it('sends an API request and processes the response', function () {
         ]);
 });
 
-it('sets and retrieves data in ApiRequest', function () {
-    $request = new ApiRequest;
+it('sets and retrieves data in Request', function () {
+    $request = new Request;
     $request->setMethod(Method::POST)
         ->setEndpoint('example-endpoint')
         ->body()->set(['key' => 'value']);
@@ -66,13 +66,13 @@ it('sets and retrieves data in ApiRequest', function () {
         ->and($request->body()->all())->toBe(['key' => 'value']);
 });
 
-it('initializes ApiResponse with correct data and converts to array', function () {
+it('initializes Response with correct data and converts to array', function () {
     $statusCode = '200';
     $statusPhrase = 'OK';
     $data = ['result' => 'success'];
     $respondedAt = new DateTime;
 
-    $response = new ApiResponse($statusCode, $statusPhrase, $data, $respondedAt);
+    $response = new Response($statusCode, $statusPhrase, $data, $respondedAt);
 
     expect($response->getStatusCode())->toBe($statusCode)
         ->and($response->getStatusPhrase())->toBe($statusPhrase)

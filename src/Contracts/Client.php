@@ -2,9 +2,8 @@
 
 namespace CleaniqueCoders\KongAdminApi\Contracts;
 
-use CleaniqueCoders\KongAdminApi\ApiRequest;
-use CleaniqueCoders\KongAdminApi\ApiResponse;
-use Saloon\Http\Response;
+use CleaniqueCoders\KongAdminApi\Request;
+use CleaniqueCoders\KongAdminApi\Response;
 
 /**
  * Interface Client
@@ -16,17 +15,17 @@ interface Client
     /**
      * Send an API Request
      *
-     * @param  ApiRequest  $request  The API request
+     * @param  Request  $request  The API request
      * @param  array<string, mixed>  $data  The data to include in the request
-     * @return ApiResponse The structured API response
+     * @return Response The structured API response
      */
-    public function send(ApiRequest $request, array $data = []): ApiResponse;
+    public function send(Request $request, array $data = []): Response;
 
     /**
-     * Processes the API response and returns an ApiResponse instance.
+     * Processes the API response and returns an Response instance.
      *
-     * @param  Response  $response  The Saloon response object
-     * @return ApiResponse An object containing the processed response data
+     * @param  \Saloon\Http\Response  $response  The Saloon response object
+     * @return Response An object containing the processed response data
      */
-    public function response(Response $response): ApiResponse;
+    public function response(\Saloon\Http\Response $response): Response;
 }

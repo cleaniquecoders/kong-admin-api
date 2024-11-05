@@ -2,19 +2,18 @@
 
 namespace CleaniqueCoders\KongAdminApi;
 
-use CleaniqueCoders\KongAdminApi\Contracts\Client;
+use CleaniqueCoders\KongAdminApi\Contracts\Client as Contract;
 use DateTime;
-use Saloon\Http\Response;
 
 /**
- * Class ApiClient
+ * Class Client
  *
  * The client for interacting with the Kong Admin API.
  */
-class ApiClient implements Client
+class Client implements Contract
 {
     /**
-     * ApiClient constructor.
+     * Client constructor.
      *
      * @param  Connector  $connector  The API connector
      */
@@ -23,11 +22,11 @@ class ApiClient implements Client
     /**
      * Send a request to the API with the specified HTTP method and data.
      *
-     * @param  ApiRequest  $request  The API request
+     * @param  Request  $request  The API request
      * @param  array<string, mixed>  $data  The data to include in the request
-     * @return ApiResponse The structured API response
+     * @return Response The structured API response
      */
-    public function send(ApiRequest $request, array $data = []): ApiResponse
+    public function send(Request $request, array $data = []): Response
     {
         $response = $this->connector->send($request);
 
@@ -35,14 +34,14 @@ class ApiClient implements Client
     }
 
     /**
-     * Processes the API response and returns an ApiResponse instance.
+     * Processes the API response and returns an Response instance.
      *
-     * @param  Response  $response  The Saloon response object
-     * @return ApiResponse An object containing the processed response data
+     * @param  \Saloon\Http\Response  $response  The Saloon response object
+     * @return Response An object containing the processed response data
      */
-    public function response(Response $response): ApiResponse
+    public function response(\Saloon\Http\Response $response): Response
     {
-        return new ApiResponse(
+        return new Response(
             (string) $response->status(),
             $response->getPsrResponse()->getReasonPhrase(),
             $response->json(),
