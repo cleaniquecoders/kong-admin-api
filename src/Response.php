@@ -91,16 +91,27 @@ class Response implements Contract
      */
     public function toArray(): array
     {
+        $data = $this->getData();
+        $others = [];
+
+        if (isset($data['data'])) {
+            $_data = $data['data'];
+            unset($data['data']);
+            $others = $data;
+            $data = $_data;
+        }
+
         return array_merge(
             [
                 'status' => [
                     'code' => $this->getStatusCode(),
                     'phrase' => $this->getStatusPhrase(),
                 ],
+                'data' => $data,
                 'meta' => [
                     'responded_at' => $this->getRespondedAt()->format('Y-m-d H:i:s'),
                 ],
-            ], $this->getData()
+            ], $others
         );
     }
 }
