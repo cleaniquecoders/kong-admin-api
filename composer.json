@@ -38,7 +38,8 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "all": "vendor/bin/pint && vendor/bin/phpstan analyse && vendor/bin/pest"
     },
     "config": {
         "sort-packages": true,
