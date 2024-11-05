@@ -38,12 +38,12 @@ it('sends an API request and processes the response', function () {
     $this->connector->withMockClient($mockClient);
 
     $client = new ApiClient($this->connector);
-    $client->setPath('example-path');
 
     $request = new ApiRequest;
+    $request->setEndPoint('example');
     $request->get();
 
-    $response = $client->sendRequest($request);
+    $response = $client->send($request);
 
     expect($response)->toBeInstanceOf(ApiResponse::class)
         ->and($response->getStatusCode())->toBe('200')

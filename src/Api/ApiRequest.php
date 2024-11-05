@@ -30,6 +30,8 @@ class ApiRequest extends Request implements HasBody, RequestContract
 
     /**
      * The data for the API request.
+     *
+     * @var array<string, mixed>
      */
     protected array $data = [];
 
@@ -95,7 +97,7 @@ class ApiRequest extends Request implements HasBody, RequestContract
     /**
      * Set the data for the API request.
      *
-     * @param  array  $data  Set the data for the API request
+     * @param  array<string, mixed>  $data  Set the data for the API request
      * @return $this
      */
     public function setData(array $data): self
@@ -105,6 +107,12 @@ class ApiRequest extends Request implements HasBody, RequestContract
         return $this;
     }
 
+    /**
+     * Prepares a store request with POST method and data.
+     *
+     * @param  array<string, mixed>  $data  The data to store
+     * @return $this
+     */
     public function store(array $data): self
     {
         return $this
@@ -112,6 +120,13 @@ class ApiRequest extends Request implements HasBody, RequestContract
             ->setData($data);
     }
 
+    /**
+     * Prepares an update request with PUT method, identifier, and data.
+     *
+     * @param  string  $identifier  The identifier for the resource to update
+     * @param  array<string, mixed>  $data  The data for the update
+     * @return $this
+     */
     public function update(string $identifier, array $data): self
     {
         return $this
@@ -120,6 +135,12 @@ class ApiRequest extends Request implements HasBody, RequestContract
             ->setData($data);
     }
 
+    /**
+     * Prepares a delete request with DELETE method and identifier.
+     *
+     * @param  string  $identifier  The identifier for the resource to delete
+     * @return $this
+     */
     public function delete(string $identifier): self
     {
         return $this
@@ -127,11 +148,17 @@ class ApiRequest extends Request implements HasBody, RequestContract
             ->setIdentifier($identifier);
     }
 
+    /**
+     * Prepares a get request with GET method and optional identifier.
+     *
+     * @param  string|null  $identifier  The identifier for the resource to retrieve
+     * @return $this
+     */
     public function get(?string $identifier = null): self
     {
         $this->setMethod(Method::GET);
 
-        if ($identifier && is_string($identifier) && ! empty($identifier)) {
+        if ($identifier !== null) {
             $this->setIdentifier($identifier);
         }
 
@@ -145,8 +172,6 @@ class ApiRequest extends Request implements HasBody, RequestContract
      */
     public function resolveEndpoint(): string
     {
-
-        return $this->getEndpoint()
-            .(! empty($this->getIdentifier()) ? '/'.$this->getIdentifier() : '');
+        return $this->getEndpoint().($this->getIdentifier() !== '' ? '/'.$this->getIdentifier() : '');
     }
 }
