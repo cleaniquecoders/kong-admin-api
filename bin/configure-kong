@@ -1,0 +1,48 @@
+#!/bin/bash
+
+echo " 🚀 Export Default Configuration"
+curl -s localhost:8001 | jq '.configuration' > .config/kong/configuration-default.json
+
+echo " 🚀 Set Rate Limit Globbaly to 60 requests per minute."
+curl -X POST http://localhost:8001/plugins \
+  --data name=rate-limiting \
+  --data config.minute=60 \
+  --data config.policy=local | jq '.' > .config/kong/admin-api-rate-limit-global.json
+
+echo " 🚀 Set Default Proxy Cache to 30 seconds"
+curl -X POST http://localhost:8001/plugins \
+  --data "name=proxy-cache" \
+  --data "config.request_method=GET" \
+  --data "config.response_code=200" \
+  --data "config.content_type=application/json; charset=utf-8" \
+  --data "config.cache_ttl=30" \
+  --data "config.strategy=memory" | jq '.' > .config/kong/admin-api-proxy-cache-global.json
+
+echo " 🚀 Create Admin API Service"
+curl --request POST \
+  --url http://localhost:8001/services \
+  --data name=admin-api-service \
+  --data url='http://localhost:8001' | jq '.' > .config/kong/admin-api-service.json
+
+echo " 🚀 Create Admin API Route"
+curl --request POST \
+  --url http://localhost:8001/services/admin-api-service/routes \
+  --data 'paths[]=/admin-api' \
+  --data name=admin-api-route | jq '.' > .config/kong/admin-api-route.json
+
+echo " 🚀 Enable Key Auth on Admin API Service"
+curl --request POST \
+  --url http://localhost:8001/services/admin-api-service/plugins \
+  --header 'Content-Type: application/json' \
+  --header 'accept: application/json' \
+  --data '{"name":"key-auth","config":{"key_names":["api-key"],"key_in_query":false}}' | jq '.' > .config/kong/admin-api-key.json
+
+echo " 🚀 Create Admin API Consumer"
+curl --request POST \
+  --url http://localhost:8001/consumers \
+  --header 'Content-Type: application/json' \
+  --header 'accept: application/json' \
+  --data '{"username":"apim","custom_id":"apim"}' | jq '.' > .config/kong/consumer-apim.json
+
+echo " 🚀 Create APIM API Key"
+curl -X POST http://localhost:8001/consumers/apim/key-auth | jq '.' > .config/kong/admin-api-consumer-key.json
