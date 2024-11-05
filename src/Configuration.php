@@ -5,21 +5,26 @@ namespace CleaniqueCoders\KongAdminApi;
 class Configuration
 {
     protected string $base;
+
     protected string $uri;
+
     protected string $apiKey;
+
     protected string $keyName;
+
     protected array $headers;
+
     protected bool $verify;
 
     /**
      * Constructor to initialize the configuration.
      *
-     * @param  string  $base      Base URL for Kong Admin
-     * @param  string  $uri       URI for Kong Admin API
-     * @param  string  $apiKey    API key for authentication
-     * @param  string  $keyName   API key name for authentication
-     * @param  array   $headers   Headers for requests
-     * @param  bool    $verify    Whether to verify SSL certificates
+     * @param  string  $base  Base URL for Kong Admin
+     * @param  string  $uri  URI for Kong Admin API
+     * @param  string  $apiKey  API key for authentication
+     * @param  string  $keyName  API key name for authentication
+     * @param  array  $headers  Headers for requests
+     * @param  bool  $verify  Whether to verify SSL certificates
      */
     public function __construct(
         string $base,

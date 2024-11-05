@@ -42,5 +42,5 @@ it('uses default keyName, headers, and verify if not provided', function () {
 });
 
 it('throws an error when required parameters are missing', function () {
-    new Configuration();
+    new Configuration;
 })->throws(TypeError::class);
