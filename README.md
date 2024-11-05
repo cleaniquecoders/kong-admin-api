@@ -12,7 +12,42 @@ You can install the package via Composer:
 composer require cleaniquecoders/kong-admin-api
 ```
 
-For contributing for development, refer [development](docs/development.md) documentation.
+### Setup Kong Gateway API Loopback
+
+For initial setup, you need Kong Gateway configured with loopback it's Admin API and enable header based authentication. Following are an example of the setup. These commands will simply create the new consumer, add admin API service, create API key for consumer.
+
+```bash
+#!/bin/bash
+
+echo " 🚀 Create Admin API Service"
+curl --request POST \
+  --url http://localhost:8001/services \
+  --data name=admin-api-service \
+  --data url='http://localhost:8001' | jq '.' > admin-api-service.json
+
+echo " 🚀 Create Admin API Route"
+curl --request POST \
+  --url http://localhost:8001/services/admin-api-service/routes \
+  --data 'paths[]=/admin-api' \
+  --data name=admin-api-route | jq '.' > admin-api-route.json
+
+echo " 🚀 Enable Key Auth on Admin API Service"
+curl --request POST \
+  --url http://localhost:8001/services/admin-api-service/plugins \
+  --header 'Content-Type: application/json' \
+  --header 'accept: application/json' \
+  --data '{"name":"key-auth","config":{"key_names":["api-key"],"key_in_query":false}}' | jq '.' > admin-api-key.json
+
+echo " 🚀 Create Admin API Consumer"
+curl --request POST \
+  --url http://localhost:8001/consumers \
+  --header 'Content-Type: application/json' \
+  --header 'accept: application/json' \
+  --data '{"username":"apim","custom_id":"apim"}' | jq '.' > consumer-apim.json
+
+echo " 🚀 Create APIM API Key"
+curl -X POST http://localhost:8001/consumers/apim/key-auth | jq '.' > admin-api-consumer-key.json
+```
 
 ## Usage
 
@@ -231,7 +266,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details on how to contribute.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details on how to contribute. See [development](docs/development.md) documentation details.
 
 ## Security Vulnerabilities
 
