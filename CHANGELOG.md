@@ -2,6 +2,18 @@
 
 All notable changes to `kong-admin-api` will be documented in this file.
 
+## v1.0.2 - 2024-12-16
+
+### What's Changed
+
+* Update larastan/larastan requirement from ^2.9 to ^3.0 by @dependabot in https://github.com/cleaniquecoders/kong-admin-api/pull/1
+
+### New Contributors
+
+* @dependabot made their first contribution in https://github.com/cleaniquecoders/kong-admin-api/pull/1
+
+**Full Changelog**: https://github.com/cleaniquecoders/kong-admin-api/compare/v1.0.1...v1.0.2
+
 ## v1.0.1 - 2024-11-05
 
 **Full Changelog**: https://github.com/cleaniquecoders/kong-admin-api/compare/v1.0.0...v1.0.1
